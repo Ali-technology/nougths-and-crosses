@@ -1,0 +1,151 @@
+* {
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+}
+
+:root {
+    --background-color: rgb(6, 4, 61);
+    --stripe-color: rgb(64, 158, 246);
+    --inputs-color: rgb(64, 158, 246);
+    --line-color: rgb(104, 0, 139);
+    --board-size-300px: 400px;
+    --grid-cells-gap-10px: 5px;
+}
+/* HTML classes */
+.display-flx-jst-ctr-aln-ctr {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.display-grid {
+    display: grid;
+}
+
+.main {
+    background-color: var(--background-color);
+    width: 100%;
+    height: 100vh;
+}
+
+#board {
+    position: relative;
+    background-color: var(--stripe-color);
+    /* Defines 3 columns, each taking up one equal fraction of the available space*/
+    grid-template-columns: repeat(3, 1fr);
+    /* Defines 3 rows, each taking up one equal fraction of the available space */
+    grid-template-rows: repeat(3, 1fr); 
+
+    /* Sets the overall size of the board */
+    width: var(--board-size-300px); 
+    height: var(--board-size-300px);
+
+    gap: var(--grid-cells-gap-10px);
+    grid-auto-flow: dense;
+
+    font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+}
+
+h1 {
+    position: absolute;
+    top: 15%;
+    color: aqua;
+}
+
+
+/* Basic styling for the cells */
+.cell {
+    background-color: var(--background-color);
+    border: none;
+   /* Centers the X or O inside the cell */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 2rem; 
+    cursor: pointer;
+    /* font settings */
+    color: aqua;
+    font-size: 50px;
+    font-weight: 900;
+}
+
+/* RESET BUTTON */
+.restart-btn {
+    padding: 0.7rem 5rem;
+    border-radius: 1.5rem;
+    background: linear-gradient(rgb(251, 255, 0), rgb(255, 157, 0), rgb(255, 94, 0), rgb(255, 42, 0), red);
+    box-shadow: 1px 1px 8px red;
+    outline: none;
+    border: none;
+    cursor: pointer;
+
+    font-family: monospace;
+    font-size: x-large;
+    color: rgb(14, 13, 86);
+    font-weight: 600;
+
+    position: absolute;
+    bottom: 15%;
+}
+
+.restart-btn:hover {
+    transition: all .4s ease;
+    background: linear-gradient(red, rgb(255, 42, 0), rgb(255, 94, 0), rgb(255, 157, 0), rgb(251, 255, 0));
+    box-shadow: -1px -1px 8px red;
+    font-style: oblique;
+}
+
+/* Line Ruler */
+.line-from-top-left,
+.line-from-top-right,
+.line-from-left,
+.line-from-top {
+    position: absolute;
+    width: 0;
+    height: 4px;
+    background: red;
+    transition: width 0.4s ease;
+}
+
+.line {
+    position: absolute;
+    height: 100%;
+    width: 0;
+    background: var(--line-color);
+    transition: width 0.4s ease;
+}
+
+/* Rows */
+.row-1 { top: 16.6%; left: 0; }
+.row-2 { top: 50%; left: 0; }
+.row-3 { top: 83.3%; left: 0; }
+
+/* Columns */
+.col-1, .col-2, .col-3 {
+    transform: rotate(90deg);
+    transform-origin: left;
+}
+
+.col-1 { top: 0; left: 16.6%; }
+.col-2 { top: 0; left: 50%; }
+.col-3 { top: 0; left: 83.3%; }
+
+/* Diagonals */
+.diag-1 {
+    top: 0;
+    left: 0;
+    transform: rotate(45deg);
+    transform-origin: left;
+}
+
+.diag-2 {
+    top: 0;
+    right: 0;
+    transform: rotate(-45deg);
+    transform-origin: right;
+}
+
+/* ClassList */
+.show-line {
+    width: var(--grid-cells-gap-10px);
+}
