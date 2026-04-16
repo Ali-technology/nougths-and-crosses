@@ -1,65 +1,14 @@
 const cells = document.querySelectorAll('.cell');
 const restartBtn = document.querySelector("#restartBtn");
 const display = document.querySelector("#turnDisplay");
-
-// function startGame() {
-//     // askCharacter();
-//     displayCharactersOnClick();
-//     updateUI();
-// }
-
-// // Ask Characters(X OR O)
-// function askCharacter() {
-//     prompt('Please input Your Name for "X"');
-//     prompt('Please input Your Name for "O"');
-// }
-
-// let counter = 1;
-// let currentPlayer = '';
-// if (counter % 2 === 0) {
-//     currentPlayer = 1;
-// } else {
-//     currentPlayer = 2;
-//     ++counter;
-// };
-// ++counter;
-
-// function handleMove() {
-//     // Apply move based on player
-//     if (currentPlayer === 1) {
-//         cells.forEach(cell => {
-//             cell.addEventListener('click', () => {
-//                 cell.textContent = "X";
-//             });
-//         });
-//     } else {
-//         cells.forEach(cell => {
-//             cell.addEventListener('click', () => {
-//                 cell.textContent = "O";
-//             });
-//         })
-//     }
-// }
-
-// // To display the game characters
-// function displayCharactersOnClick() {
-
-//     handleMove();
-// }
-
-// function updateUI() {
-//     const display = document.querySelector("#turnDisplay");
-//     display.textContent = `Player ${currentPlayer}'s turn`;
-// }
-
-// // testing game
-// startGame();
+const resetScoreBtn = document.querySelector("#resetScore");
 
 let currentPlayer = "X";
 let gameActive = true;
 
 // Start game
 function startGame() {
+    loadScoreToUI();
     updateUI();
     attachCellEvents();
 };
@@ -84,6 +33,8 @@ function handleMove(e) {
         gameActive = false;
     
         showWinningLine(result.line);
+
+        updateScore(result.winner);
         return;
     }
 
@@ -156,6 +107,17 @@ function resetGame() {
     resetLines();
 };
 
+// Reset Score
+resetScoreBtn.addEventListener("click", () => {
+    score = { X: 0, O: 0 };
+
+    document.querySelector("#scoreX").textContent = 0;
+    document.querySelector("#scoreO").textContent = 0;
+
+    // clear storage
+    localStorage.removeItem("ttt-score");
+});
+
 // Sice we attached { once: true }, we have to re-enable the click
 function attachCellEvents() {
     cells.forEach(cell => {
@@ -170,5 +132,32 @@ function resetLines() {
 };
 
 restartBtn.addEventListener("click", resetGame);
+
+// Create Score State
+let score = JSON.parse(localStorage.getItem("ttt-score")) || {
+    X: 0,
+    O: 0
+};
+
+function loadScoreToUI() {
+    document.querySelector("#scoreX").textContent = score.X;
+    document.querySelector("#scoreO").textContent = score.O;
+}
+
+// Update Score Function
+function updateScore(winner) {
+    if (winner === "X") {
+        score.X++;
+    } else if (winner === "O") {
+        score.O++;
+    }
+
+    // update UI
+    document.querySelector("#scoreX").textContent = score.X;
+    document.querySelector("#scoreO").textContent = score.O;
+
+    // SAVE TO localStorage
+    localStorage.setItem("ttt-score", JSON.stringify(score));
+}
 
 startGame();
