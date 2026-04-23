@@ -5,10 +5,62 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Nougths and Crosses</title>
     <link rel="stylesheet" href="/assets/css/n-and-c.css">
-    <link rel="shortcut icon" href="/assets/images/X n O.jpg" type="image/x-icon">
+    <link rel="shortcut icon" href="/assets/images/icon.jpg" type="image/x-icon">
 </head>
 <body>
+    <button id="themeToggle" class="theme-btn">Toggle Mode</button>
+    <div class="background">
+        <svg xmlns="http://www.w3.org/2000/svg"
+     viewBox="0 0 1440 320"
+     preserveAspectRatio="none"
+     style="position:absolute; bottom:0; left:0; width:100%; height:100%;">
 
+  <defs>
+    <linearGradient id="waveGradient" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#0ea5e9" />
+      <stop offset="50%" stop-color="#6366f1" />
+      <stop offset="100%" stop-color="#a855f7" />
+    </linearGradient>
+  </defs>
+
+  <!-- Wave Layer 1 -->
+  <path fill="url(#waveGradient)" opacity="0.7">
+    <animate attributeName="d"
+      dur="10s"
+      repeatCount="indefinite"
+      values="
+      M0,160 C360,220 1080,100 1440,160 L1440,320 L0,320 Z;
+      M0,180 C360,120 1080,240 1440,180 L1440,320 L0,320 Z;
+      M0,160 C360,220 1080,100 1440,160 L1440,320 L0,320 Z
+      " />
+  </path>
+
+  <!-- Wave Layer 2 (slower depth effect) -->
+  <path fill="url(#waveGradient)" opacity="0.4">
+    <animate attributeName="d"
+      dur="14s"
+      repeatCount="indefinite"
+      values="
+      M0,200 C400,140 1040,260 1440,200 L1440,320 L0,320 Z;
+      M0,220 C400,280 1040,120 1440,220 L1440,320 L0,320 Z;
+      M0,200 C400,140 1040,260 1440,200 L1440,320 L0,320 Z
+      " />
+  </path>
+
+  <!-- Wave Layer 3 (soft background motion) -->
+  <path fill="url(#waveGradient)" opacity="0.25">
+    <animate attributeName="d"
+      dur="18s"
+      repeatCount="indefinite"
+      values="
+      M0,240 C480,200 960,280 1440,240 L1440,320 L0,320 Z;
+      M0,260 C480,300 960,180 1440,260 L1440,320 L0,320 Z;
+      M0,240 C480,200 960,280 1440,240 L1440,320 L0,320 Z
+      " />
+  </path>
+
+</svg>
+    </div>
     <main class="main">
         <h1 id="turnDisplay">Player 1's turn</h1>
         <div id="board">
