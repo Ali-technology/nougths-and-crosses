@@ -1,220 +1,996 @@
+/* ====================================
+GENERAL RESET
+======================================= */
+
 * {
     padding: 0;
     margin: 0;
     box-sizing: border-box;
 }
 
-:root {
-    --default-linear-gradient: linear-gradient(180deg, rgb(23, 4, 50), rgb(0, 55, 107));
-    --background-color: rgb(6, 4, 61);
-    --stripe-color: linear-gradient(180deg, rgba(0, 11, 161, 0.394), rgba(112, 250, 255, 0.245));
-    /* --stripe-color: rgb(64, 158, 246); */
-    /* --inputs-color: rgb(64, 158, 246); */
-    --line-color: aqua;
-    --board-size-300px: 400px;
-    --grid-cells-gap-10px: 5px;
-    --clean: #1eff00;
-    --box-shadow-hover: -1px -1px 8px blue, 1px 1px 8px blue;
-    --box-shadow-active: inset -1px -1px 8px blue;
-    --box-shadow: 1px 1px 8px blue;
-    --cell-color: aqua;
-}
-
-body.light-mode {
-    --default-linear-gradient: linear-gradient(180deg, purple, blue);
-    --background-color: rgb(6, 4, 61);
-    --stripe-color: linear-gradient(180deg, rgba(166, 0, 255, 0.784), rgba(112, 250, 255, 0.79));
-    /* --stripe-color: rgb(64, 158, 246); */
-    /* --inputs-color: rgb(64, 158, 246); */
-    --line-color: rgb(26, 255, 0);
-    --board-size-300px: 400px;
-    --grid-cells-gap-10px: 5px;
-    --clean: #E8E8E8;
-    --restart-btn-background: linear-gradient(rgb(251, 255, 0), rgb(255, 157, 0), rgb(255, 94, 0), rgb(255, 42, 0), red);
-    --restart-btn-background-hover: linear-gradient(rgb(251, 255, 0), rgb(255, 157, 0), rgb(255, 94, 0), rgb(255, 0, 0), red);
-    --box-shadow-hover: -1px -1px 8px red, 1px 1px 8px red;
-    --box-shadow-active: inset -1px -1px 8px red;
-    --box-shadow: 1px 1px 8px red;
-    --cell-color: rgb(26, 255, 0);
+html,
+body {
+    width: 100%;
+    min-height: 100%;
 }
 
 body {
     position: relative;
+    overflow: hidden;
+    font-family: "Lucida Sans", "Lucida Sans Regular", "Lucida Grande", "Lucida Sans Unicode", Geneva, Verdana, sans-serif;
 }
 
-.theme-btn {
-    position: absolute;
-    top: 20px;
-    right: 20px;
-    padding: 8px 16px;
-    border-radius: 20px;
-    border: none;
-    cursor: pointer;
 
-    background: var(--stripe-color);
-    color: var(--clean);
-    font-weight: bold;
-    z-index: 100;
+/* ====================================
+REUSABLE COMPONENTS
+======================================= */
+
+:root {
+    --default-linear-gradient: linear-gradient(180deg,rgb(23, 4, 50), rgb(0, 55, 107));
+
+    --background-color: rgb(6, 4, 61);
+
+    --stripe-color: linear-gradient(180deg, rgba(0, 11, 161, 0.394), rgba(112, 250, 255, 0.245));
+
+    --line-color: aqua;
+
+    --board-size: min(400px, 80vw);
+
+    --grid-cells-gap: 5px;
+
+    --clean: #1eff00;
+
+    --box-shadow-hover: -1px -1px 8px blue,
+    1px 1px 8px blue;
+
+    --box-shadow-active: inset -1px -1px 8px blue;
+
+    --box-shadow: 1px 1px 8px blue;
+
+    --cell-color: aqua;
+
+    --restart-btn-background: linear-gradient(rgb(251, 255, 0), rgb(255, 157, 0), rgb(255, 94, 0), rgb(255, 42, 0), red);
+
+    --restart-btn-background-hover: linear-gradient(rgb(251, 255, 0), rgb(255, 157, 0), rgb(255, 94, 0), rgb(255, 0, 0), red);
 }
+
+
+/* ====================================
+LIGHT MODE
+======================================= */
+
+body.light-mode {
+    --default-linear-gradient: linear-gradient(180deg, purple, blue);
+
+    --background-color: rgb(235, 240, 255);
+
+    --stripe-color: linear-gradient(180deg, rgba(166, 0, 255, 0.784), rgba(112, 250, 255, 0.79));
+
+    --line-color: rgb(26, 255, 0);
+
+    --clean: rgba(255, 8, 0, 0.692);
+
+    --box-shadow-hover: -1px -1px 8px red,
+    1px 1px 8px red;
+
+    --box-shadow-active: inset -1px -1px 8px red;
+
+    --box-shadow: 1px 1px 8px red;
+
+    --cell-color: rgb(26, 255, 0);
+}
+
+
+
+/* ====================================
+MAIN CONTAINER
+======================================= */
 
 .main {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    background: var(--default-linear-gradient);
-    width: 100%;
-    height: 100vh;
-}
-
-#board {
-    display: grid;
     position: relative;
-    background: var(--default-linear-gradient);
-    /* Defines 3 columns, each taking up one equal fraction of the available space*/
-    grid-template-columns: repeat(3, 1fr);
-    /* Defines 3 rows, each taking up one equal fraction of the available space */
-    grid-template-rows: repeat(3, 1fr); 
+    z-index: 1;
 
-    /* Sets the overall size of the board */
-    width: var(--board-size-300px); 
-    height: var(--board-size-300px);
+    min-height: 100vh;
+    width: 100%;
 
-    gap: var(--grid-cells-gap-10px);
-    grid-auto-flow: dense;
-
-    font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
-}
-
-h1 {
-    position: absolute;
-    top: 15%;
-    color: aqua;
-}
-
-
-/* Basic styling for the cells */
-.cell {
-    background: var(--stripe-color);
-    border: none;
-   /* Centers the X or O inside the cell */
     display: flex;
+    flex-direction: column;
     justify-content: center;
     align-items: center;
-    font-size: 2rem; 
-    cursor: pointer;
-    /* font settings */
-    color: var(--cell-color);
-    font-size: 50px;
-    font-weight: 900;
+
+    padding: 120px 20px 100px;
+    
+    background-image: url(/assets/images/UI-background.png);
+
+    background-position-y: bottom;
 }
 
-/* RESET BUTTON */
-.restart-btn {
-    padding: 0.7rem 5rem;
-    border-radius: 1.5rem;
-    background: var(--restart-btn-background);
-    box-shadow: var(--box-shadow);
-    outline: none;
+.main.light-mode {
+    background-image: url(/assets/images/UI-background-2.png);
+}
+
+
+/* ====================================
+AUDIO SETTINGS
+======================================= */
+
+.audio-options {
+    position: fixed;
+
+    top: 15px;
+    right: 50%;
+
+    transform: translateX(50%);
+
+    z-index: 1100;
+
+    color: rgb(81, 21, 165);
+
+    font-size: 2rem;
+
+    cursor: pointer;
+
+    transition: transform 0.3s ease,
+    color 0.3s ease;
+}
+
+.audio-options:hover {
+    transform: translateX(50%) scale(1.1);
+}
+
+
+/* ====================================
+AUDIO OVERLAY
+======================================= */
+
+.audio-overlay {
+    display: none;
+
+    position: fixed;
+    inset: 0;
+
+    z-index: 900;
+
+    background: rgba(0, 0, 0, 0.45);
+
+    backdrop-filter: blur(4px);
+}
+
+.audio-overlay.show-overlay {
+    display: block;
+}
+
+
+/* ====================================
+AUDIO OPTIONS CONTAINER
+======================================= */
+
+.audio-options-container {
+    display: none;
+
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-evenly;
+
+    position: fixed;
+
+    top: 50%;
+    left: 50%;
+
+    transform: translate(-50%, -50%);
+
+    width: min(360px, 85vw);
+    min-height: 250px;
+
+    padding: 25px;
+
+    z-index: 1000;
+
+    background: rgb(81, 21, 165);
+
+    border: 1px solid rgba(255, 255, 255, 0.2);
+
+    border-radius: 15px;
+
+    box-shadow: 0 0 20px rgba(0, 0, 255, 0.5),
+    inset 0 0 10px rgba(0, 255, 255, 0.15);
+}
+
+.audio-options-container.show-audio-options {
+    display: flex;
+}
+
+
+/* ====================================
+AUDIO CONTROLS
+======================================= */
+
+.volume-control,
+.play-pause-control {
+    width: 100%;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+
+    list-style: none;
+
+    color: var(--clean);
+}
+
+
+/* ====================================
+VOLUME SLIDER
+======================================= */
+
+#volumeControl {
+    width: min(250px, 80%);
+
+    cursor: grab;
+}
+#volumeControl:active {
+    cursor: grabbing;
+}
+
+
+/* ====================================
+PLAY / PAUSE BUTTON
+======================================= */
+
+#musicToggle {
+    width: 55px;
+    height: 55px;
+
     border: none;
+    border-radius: 50%;
+
+    background: var(--stripe-color);
+
+    box-shadow: var(--box-shadow);
+
+    font-size: 1.4rem;
+
     cursor: pointer;
 
-    font-family: monospace;
-    font-size: x-large;
-    color: rgb(14, 13, 86);
-    font-weight: 600;
-
-    position: absolute;
-    bottom: 15%;
+    transition: transform 0.2s ease,
+    box-shadow 0.3s ease;
 }
 
-.restart-btn:hover, .scoreboard button:hover {
-    transition: all .3s ease-in-out;
-    background: var(--restart-btn-background-hover);
+#musicToggle:hover {
+    transform: scale(1.08);
+
     box-shadow: var(--box-shadow-hover);
 }
 
-.restart-btn:active, .scoreboard button:active {
-    transition: all .4s ease;
+#musicToggle:active {
+    transform: scale(0.95);
+
     box-shadow: var(--box-shadow-active);
 }
 
-/* Line Ruler */
-.line-from-top-left,
-.line-from-top-right,
-.line-from-left,
-.line-from-top {
-    position: absolute;
-    width: 0;
-    height: 4px;
-    background: red;
-    transition: width 0.4s ease;
+
+/* ====================================
+THEME BUTTON
+======================================= */
+
+.theme-btn {
+    position: fixed;
+
+    top: 20px;
+    right: 20px;
+
+    padding: 8px 16px;
+
+    border: none;
+    border-radius: 20px;
+
+    background: var(--stripe-color);
+    color: var(--clean);
+
+    font-weight: bold;
+
+    cursor: pointer;
+
+    z-index: 100;
+
+    box-shadow: var(--box-shadow);
+
+    transition: transform 0.3s ease,
+    box-shadow 0.3s ease;
 }
+
+.theme-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--box-shadow-hover);
+}
+
+.theme-btn:active {
+    transform: scale(0.95);
+    box-shadow: var(--box-shadow-active);
+}
+
+
+/* ====================================
+GAME TITLE
+======================================= */
+
+h1 {
+    position: absolute;
+
+    top: 55px;
+
+    width: 100%;
+
+    padding: 0 20px;
+
+    text-align: center;
+
+    color: var(--clean);
+
+    font-size: clamp(1.2rem, 3vw, 2rem);
+
+    line-height: 1.2;
+
+    z-index: 5;
+}
+
+
+/* ====================================
+GAME BOARD
+======================================= */
+
+#board {
+    position: relative;
+
+    display: grid;
+
+    width: var(--board-size);
+    height: var(--board-size);
+
+    grid-template-columns: repeat(3, 1fr);
+    grid-template-rows: repeat(3, 1fr);
+
+    gap: var(--grid-cells-gap);
+
+    padding: 5px;
+
+    background: var(--default-linear-gradient);
+
+    border-radius: 15px;
+
+    box-shadow: 0 0 20px rgba(0, 0, 255, 0.35),
+    inset 0 0 10px rgba(0, 255, 255, 0.15);
+
+    overflow: hidden;
+}
+
+
+/* ====================================
+GAME CELLS
+======================================= */
+
+.cell {
+    min-width: 0;
+    min-height: 0;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    background: var(--stripe-color);
+
+    border: none;
+    border-radius: 8px;
+
+    color: var(--cell-color);
+
+    font-size: clamp(2.5rem, 8vw, 4rem);
+    font-weight: 900;
+
+    cursor: pointer;
+
+    user-select: none;
+
+    transition:
+        background 0.25s ease,
+        transform 0.15s ease,
+        box-shadow 0.25s ease;
+}
+
+.cell:hover {
+    box-shadow: inset 0 0 10px rgba(0, 255, 255, 0.25);
+}
+
+.cell:active {
+    transform: scale(0.96);
+}
+
+
+/* ====================================
+RESTART BUTTON
+======================================= */
+
+.restart-btn {
+    margin-top: 35px;
+
+    padding: 0.7rem 4rem;
+
+    border: none;
+    outline: none;
+
+    border-radius: 1.5rem;
+
+    background: var(--restart-btn-background);
+
+    box-shadow: var(--box-shadow);
+
+    color: rgb(14, 13, 86);
+
+    font-family: monospace;
+    font-size: clamp(1rem, 3vw, 1.4rem);
+    font-weight: 600;
+
+    cursor: pointer;
+
+    transition:
+        transform 0.3s ease,
+        box-shadow 0.3s ease,
+        background 0.3s ease;
+}
+
+.restart-btn:hover,
+.scoreboard button:hover {
+    background: var(--restart-btn-background-hover);
+
+    box-shadow: var(--box-shadow-hover);
+
+    transform: translateY(-2px);
+}
+
+.restart-btn:active,
+.scoreboard button:active {
+    transform: scale(0.96);
+
+    box-shadow: var(--box-shadow-active);
+}
+
+
+/* ====================================
+WINNING LINE
+======================================= */
 
 .line {
     position: absolute;
-    height: 100%;
+
     width: 0;
+    height: 4px;
+
     background: var(--line-color);
+
+    border-radius: 10px;
+
     transition: width 0.4s ease;
+
+    pointer-events: none;
+
+    z-index: 10;
+
+    box-shadow:
+        0 0 5px var(--line-color),
+        0 0 10px var(--line-color);
 }
 
-/* Rows */
-.row-1, .row-2, .row-3 {
+
+/* ====================================
+ROWS
+======================================= */
+
+.row-1,
+.row-2,
+.row-3 {
     transform: rotate(90deg);
+    transform-origin: left center;
 }
 
-.row-1 { top: -34%; left: 49.4%; }
-.row-2 { top: 0; left: 49.4%; }
-.row-3 { top: 33%; left: 49.4%; }
-
-/* Columns */
-.col-1, .col-2, .col-3 {
-    transform-origin: left;
+.row-1 {
+    top: -34%;
+    left: 49.4%;
 }
 
-.col-1 { top: 0; left: 15.5%; }
-.col-2 { top: 0; left: 49%; }
-.col-3 { top: 0; left: 83%; }
+.row-2 {
+    top: 0;
+    left: 49.4%;
+}
 
-/* Diagonals */
+.row-3 {
+    top: 33%;
+    left: 49.4%;
+}
+
+
+/* ====================================
+COLUMNS
+======================================= */
+
+.col-1,
+.col-2,
+.col-3 {
+    transform-origin: left center;
+}
+
+.col-1 {
+    top: 0;
+    left: 15.5%;
+}
+
+.col-2 {
+    top: 0;
+    left: 49%;
+}
+
+.col-3 {
+    top: 0;
+    left: 83%;
+}
+
+
+/* ====================================
+DIAGONALS
+======================================= */
+
 .diag-1 {
     top: 0;
     left: 50%;
+
     transform: rotate(-45deg);
+    transform-origin: left center;
 }
 
 .diag-2 {
     top: 0;
     right: 50%;
+
     transform: rotate(45deg);
+    transform-origin: right center;
 }
 
-/* ClassList */
+
+/* ====================================
+SHOW WINNING LINE
+======================================= */
+
 .show-line {
-    width: var(--grid-cells-gap-10px);
+    width: var(--board-size);
 }
 
-/* Score Board */
+
+/* ====================================
+SCOREBOARD
+======================================= */
+
 .scoreboard {
-    font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
-    font-size: x-large;
+    position: absolute;
+
+    top: 20px;
+    left: 20px;
+
     color: var(--clean);
 
-    position: absolute;
-    top: 5%;
+    font-size: clamp(0.9rem, 2vw, 1.2rem);
+
+    line-height: 1.5;
+
+    z-index: 20;
 }
 
-.scoreboard button {
-    position: absolute;
-    top: 25%;
-    right: -80%;
-    color: rgb(36, 33, 169);
+.scoreboard p {
+    margin-bottom: 4px;
+}
 
-    background: var(--restart-btn-background);
-    box-shadow: var(--box-shadow);
+
+/* ====================================
+SCOREBOARD BUTTON
+======================================= */
+
+.scoreboard button {
+    margin-top: 8px;
+
+    padding: 6px 12px;
+
     border: none;
     outline: none;
 
-    padding: 5px 10px;
     border-radius: 40px;
+
+    background: var(--restart-btn-background);
+
+    box-shadow: var(--box-shadow);
+
+    color: rgb(36, 33, 169);
+
+    font-size: 0.85rem;
+    font-weight: 600;
+
+    cursor: pointer;
+
+    transition: transform 0.3s ease,
+    box-shadow 0.3s ease,
+    background 0.3s ease;
+}
+
+
+/* ====================================
+LARGE TABLETS
+======================================= */
+
+@media (max-width: 1024px) {
+
+    :root {
+        --board-size: min(380px, 65vw);
+    }
+
+    .main {
+        padding-top: 120px;
+    }
+
+    .scoreboard {
+        top: 20px;
+        left: 20px;
+    }
+}
+
+
+/* ====================================
+TABLETS
+======================================= */
+
+@media (max-width: 768px) {
+
+    :root {
+        --board-size: min(360px, 72vw);
+    }
+
+    .main {
+        padding:
+            110px
+            15px
+            80px;
+    }
+
+    h1 {
+        top: 60px;
+    }
+
+    .scoreboard {
+        top: 20px;
+        left: 15px;
+
+        font-size: 0.9rem;
+    }
+
+    .theme-btn {
+        top: 15px;
+        right: 15px;
+
+        padding: 7px 12px;
+        font-size: 0.8rem;
+    }
+
+    .restart-btn {
+        margin-top: 25px;
+
+        padding: 0.65rem 3rem;
+    }
+    
+    .audio-options {
+        top: 15px;
+
+        font-size: 1.8rem;
+    }
+
+    .audio-options-container {
+        width: min(340px, 80vw);
+
+        min-height: 240px;
+
+        padding: 22px;
+    }
+
+    .volume-control,
+    .play-pause-control {
+        gap: 8px;
+
+        font-size: 0.95rem;
+    }
+
+    #volumeControl {
+        width: 80%;
+    }
+
+    #musicToggle {
+        width: 50px;
+        height: 50px;
+
+        font-size: 1.2rem;
+    }
+}
+
+
+/* ====================================
+MOBILE PHONES
+======================================= */
+
+@media (max-width: 480px) {
+
+    :root {
+        --board-size: min(330px, 84vw);
+        --grid-cells-gap: 4px;
+    }
+
+    .main {
+        min-height: 100svh;
+
+        padding:
+            120px
+            10px
+            60px;
+    }
+
+    h1 {
+        top: 75px;
+
+        font-size: 1.1rem;
+    }
+
+    .theme-btn {
+        top: 15px;
+        right: 10px;
+
+        padding: 6px 10px;
+
+        font-size: 0.7rem;
+    }
+
+    .scoreboard {
+        top: 15px;
+        left: 10px;
+
+        font-size: 0.75rem;
+    }
+
+    .scoreboard button {
+        padding: 5px 9px;
+        font-size: 0.7rem;
+    }
+
+    #board {
+        padding: 4px;
+
+        border-radius: 10px;
+    }
+
+    .cell {
+        border-radius: 6px;
+
+        font-size: clamp(
+            2.2rem,
+            15vw,
+            3.2rem
+        );
+    }
+
+    .restart-btn {
+        width: min(280px, 85vw);
+
+        margin-top: 25px;
+
+        padding: 0.65rem 1rem;
+
+        font-size: 1rem;
+    }
+
+    .audio-options {
+        top: 12px;
+
+        font-size: 1.6rem;
+    }
+
+    .audio-options-container {
+        width: 85vw;
+
+        min-height: 220px;
+
+        padding: 20px;
+
+        border-radius: 12px;
+    }
+
+    .volume-control,
+    .play-pause-control {
+        gap: 7px;
+
+        font-size: 0.85rem;
+    }
+
+    #volumeControl {
+        width: 85%;
+    }
+
+    #musicToggle {
+        width: 48px;
+        height: 48px;
+
+        font-size: 1.1rem;
+    }
+}
+
+
+/* ====================================
+VERY SMALL PHONES
+======================================= */
+
+@media (max-width: 360px) {
+
+    :root {
+        --board-size: 88vw;
+    }
+
+    .main {
+        padding-top: 115px;
+    }
+
+    h1 {
+        top: 70px;
+
+        font-size: 1rem;
+    }
+
+    .scoreboard {
+        font-size: 0.65rem;
+    }
+
+    .scoreboard button {
+        font-size: 0.6rem;
+    }
+
+    .theme-btn {
+        font-size: 0.65rem;
+        padding: 5px 8px;
+    }
+
+    .restart-btn {
+        width: 90vw;
+        font-size: 0.9rem;
+    }
+
+    .audio-options {
+        top: 10px;
+
+        font-size: 1.4rem;
+    }
+
+    .audio-options-container {
+        width: 90vw;
+
+        min-height: 200px;
+
+        padding: 16px;
+
+        border-radius: 10px;
+    }
+
+    .volume-control,
+    .play-pause-control {
+        font-size: 0.75rem;
+
+        gap: 6px;
+    }
+
+    #volumeControl {
+        width: 90%;
+    }
+
+    #musicToggle {
+        width: 44px;
+        height: 44px;
+
+        font-size: 1rem;
+    }
+}
+
+
+/* ====================================
+LANDSCAPE PHONES
+======================================= */
+
+@media (max-height: 600px) and (orientation: landscape) {
+
+    .main {
+        min-height: 100vh;
+
+        padding:
+            70px
+            20px
+            30px;
+
+        justify-content: center;
+    }
+
+    h1 {
+        top: 10px;
+
+        font-size: 1rem;
+    }
+
+    :root {
+        --board-size: min(55vh, 300px);
+    }
+
+    .restart-btn {
+        margin-top: 15px;
+
+        padding: 0.45rem 2rem;
+
+        font-size: 0.9rem;
+    }
+
+    .scoreboard {
+        top: 10px;
+        left: 10px;
+
+        font-size: 0.7rem;
+    }
+
+    .theme-btn {
+        top: 10px;
+        right: 10px;
+
+        font-size: 0.7rem;
+    }
+
+    .audio-options {
+        top: 40px;
+
+        font-size: 1.1rem;
+    }
+
+    .audio-options-container {
+        width: min(360px, 70vw);
+
+        min-height: 200px;
+
+        padding: 15px;
+    }
+
+    .volume-control,
+    .play-pause-control {
+        gap: 5px;
+
+        font-size: 0.8rem;
+    }
+
+    #musicToggle {
+        width: 42px;
+        height: 42px;
+
+        font-size: 1rem;
+    }
+}
+
+
+/* ====================================
+REDUCED MOTION
+======================================= */
+
+@media (prefers-reduced-motion: reduce) {
+
+    *,
+    *::before,
+    *::after {
+        scroll-behavior: auto !important;
+        transition-duration: 0.01ms !important;
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+    }
 }
