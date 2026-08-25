@@ -10,7 +10,7 @@ The game features multiple game modes, computer difficulty levels, sound effects
 ## 🚀 Live Demo
 
 🔗 **Play the Game:**  
-[Live Demo](YOUR_LIVE_DEMO_LINK)
+**[Play Noughts and Crosses](https://ali-technology.github.io/nougths-and-crosses/)**
 
 ---
 
