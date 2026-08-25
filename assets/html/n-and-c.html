@@ -1,74 +1,474 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
+
     <meta charset="UTF-8">
+
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Nougths and Crosses</title>
+
+    <title>Noughts & Crosses</title>
+
     <link rel="stylesheet" href="/assets/css/n-and-c.css">
 
     <link rel="shortcut icon" href="/assets/images/X_O.jpg" type="image/x-icon">
 
-    <script src="https://kit.fontawesome.com/b53c224bc2.js" crossorigin="anonymous"></script>
 </head>
+
+
 <body>
-    <audio
-        id="backgroundMusic"
-        src="/assets/audio/Arnor(chosic.com).mp3"
-        loop>
+
+    <!-- ====================================
+        BACKGROUND MUSIC
+    ===================================== -->
+
+    <audio id="backgroundMusic" loop>
+        <source src="/assets/audio/Arnor(chosic.com).mp3">
     </audio>
 
-    <button id="themeToggle" class="theme-btn">Toggle Mode</button>
 
-    <i class="fa-solid fa-sliders audio-options"></i>
+    <!-- ====================================
+    GAME SOUND EFFECTS
+    ===================================== -->
+
+    <audio id="clickSound">
+        <source src="/assets/audio/click-sound.mp3" type="audio/mpeg">
+    </audio>
+
+    <audio id="moveSound">
+        <source src="/assets/audio/move-sound.mp3" type="audio/mpeg">
+    </audio>
+
+    <audio id="winSound">
+        <source src="/assets/audio/win-sound.mp3" type="audio/mpeg">
+    </audio>
+
+    <audio id="loseSound">
+        <source src="/assets/audio/lose-sound.mp3" type="audio/mpeg">
+    </audio>
+
+    <audio id="drawSound">
+        <source src="/assets/audio/draw-sound.ogg" type="audio/ogg">
+    </audio>
+
+    <audio id="errorSound">
+        <source src="/assets/audio/error-sound.mp3" type="audio/mpeg">
+    </audio>
+
+
+    <!-- ====================================
+        GAME START SCREEN
+    ===================================== -->
+
+    <div class="game-start-screen" id="gameStartScreen">
+
+        <div class="start-card" style="overflow: hidden;">
+
+            <div class="start-icon" style="width: max-content; color: red;">
+                ◯ ×
+            </div>
+
+
+            <h1>
+                Noughts & Crosses
+            </h1>
+
+
+            <p>
+                Choose how you want to play.
+            </p>
+
+
+            <!-- ====================================
+                GAME MODE
+            ===================================== -->
+
+            <div class="setup-section">
+
+                <span class="setup-label">
+                    Game Mode
+                </span>
+
+
+                <div class="mode-selection">
+
+                    <button class="mode-option active" data-mode="two-player" type="button">
+                        <span>👥</span>
+                        Two Players
+                    </button>
+
+
+                    <button class="mode-option" data-mode="computer" type="button">
+                        <span>🤖</span>
+                        Vs Computer
+                    </button>
+
+                </div>
+
+            </div>
+
+
+            <!-- ====================================
+                PLAYER NAMES
+            ===================================== -->
+
+            <div class="player-setup" id="playerSetup">
+
+                <div class="name-field">
+
+                    <label for="playerXName">
+                        Player X
+                    </label>
+
+                    <input type="text" id="playerXName" placeholder="Enter Player X name" maxlength="18">
+
+                </div>
+
+
+                <div class="name-field" id="playerONameContainer">
+
+                    <label for="playerOName">
+                        Player O
+                    </label>
+
+                    <input type="text" id="playerOName" placeholder="Enter Player O name" maxlength="18">
+
+                </div>
+
+            </div>
+
+
+            <!-- ====================================
+                COMPUTER DIFFICULTY
+            ===================================== -->
+
+            <div class="difficulty-section" id="difficultySection" style="display: none;">
+
+                <span class="setup-label">
+                    Difficulty
+                </span>
+
+
+                <div class="difficulty-selection">
+
+                    <button class="difficulty-option active" data-difficulty="easy" type="button">
+                        <span>🟢</span>
+                        Easy
+                    </button>
+
+
+                    <button class="difficulty-option" data-difficulty="medium" type="button">
+                        <span>🟡</span>
+                        Medium
+                    </button>
+
+
+                    <button class="difficulty-option" data-difficulty="hard" type="button">
+                        <span>🔴</span>
+                        Hard
+                    </button>
+
+                </div>
+
+            </div>
+
+
+            <button id="start-game-btn" type="button">
+                Start Game
+            </button>
+
+        </div>
+
+    </div>
+
+
+    <!-- ====================================
+        AUDIO OVERLAY
+    ===================================== -->
 
     <div class="audio-overlay"></div>
 
-    <ul class="audio-options-container">
-        <li class="volume-control">
-            <label for="volumeControl">Volume:</label>
+
+    <!-- ====================================
+        AUDIO OPTIONS
+    ===================================== -->
+
+    <div class="audio-options" title="Audio Settings">
+        🎵
+    </div>
+
+
+    <div class="audio-options-container">
+
+        <div class="volume-control">
+
+            <label for="volumeControl">
+                Volume
+            </label>
+
             <input type="range" id="volumeControl" min="0" max="1" step="0.01" value="0.5">
-        </li>
-        <li class="play-pause-control">
-            <label for="musicToggle">Play/Pause:</label>
-            <button id="musicToggle">🔊</button>
-        </li>
-    </ul>
+
+        </div>
+
+
+        <div class="play-pause-control">
+
+            <span>
+                Music
+            </span>
+
+            <button id="musicToggle">
+                🔊
+            </button>
+
+        </div>
+
+
+        <div class="play-pause-control">
+
+            <span>
+                Sound Effects
+            </span>
+
+            <button id="soundToggle">
+                🔊
+            </button>
+
+        </div>
+
+    </div>
+
+
+    <!-- ====================================
+        THEME BUTTON
+    ===================================== -->
+
+    <button class="theme-btn" id="themeToggle" type="button">
+        Theme
+
+        <svg
+            class="theme-toggle-icon"
+            viewBox="0 0 24 24"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+            aria-hidden="true"
+        >
+
+            <circle
+                cx="12"
+                cy="12"
+                r="8"
+                stroke="currentColor"
+                stroke-width="1.8"
+            />
+
+            <path
+                d="M12 4V20"
+                stroke="currentColor"
+                stroke-width="1.8"
+                stroke-linecap="round"
+            />
+
+            <path
+                d="M12 4C14.1 5.4 15.5 7.7 15.5 10.3C15.5 14.5 12.8 18.1 9 19.6"
+                stroke="currentColor"
+                stroke-width="1.8"
+                stroke-linecap="round"
+            />
+
+            <circle
+                cx="17.5"
+                cy="6.5"
+                r="1"
+                fill="currentColor"
+            />
+
+            <circle
+                cx="19.2"
+                cy="9.5"
+                r="0.7"
+                fill="currentColor"
+            />
+
+        </svg>
+
+    </button>
+
+
+    <!-- ====================================
+        MAIN GAME
+    ===================================== -->
 
     <main class="main">
-        <h1 id="turnDisplay">Player 1's turn</h1>
-        <div id="board">
-            <div class="cell"></div>
-            <div class="cell"></div>
-            <div class="cell"></div>
-            <div class="cell"></div>
-            <div class="cell"></div>
-            <div class="cell"></div>
-            <div class="cell"></div>
-            <div class="cell"></div>
-            <div class="cell"></div>
 
-            <!-- Rule line -->
+        <h1>
+            Noughts & Crosses
+        </h1>
+
+
+        <!-- ====================================
+            GAME MODE DISPLAY
+        ===================================== -->
+
+        <div class="game-mode-display">
+
+            <span id="gameModeDisplay">
+                Two Players
+            </span>
+
+            <button id="changeModeBtn" type="button">
+                Change Mode
+            </button>
+
+        </div>
+
+
+        <!-- ====================================
+            SCOREBOARD
+        ===================================== -->
+
+        <div class="scoreboard">
+
+            <div class="scoreboard-players">
+
+                <div class="score-player">
+
+                    <span id="scoreXName" class="score-name">
+                        Player X
+                    </span>
+
+                    <strong id="scoreX">
+                        0
+                    </strong>
+
+                </div>
+
+
+                <div class="score-draw">
+
+                    <span>
+                        Draws
+                    </span>
+
+                    <strong id="scoreDraw">
+                        0
+                    </strong>
+
+                </div>
+
+
+                <div class="score-player">
+
+                    <span id="scoreOName" class="score-name">
+                        Player O
+                    </span>
+
+                    <strong id="scoreO">
+                        0
+                    </strong>
+
+                </div>
+
+            </div>
+
+
+            <button id="resetScore" type="button">
+                Reset Score
+            </button>
+
+        </div>
+
+
+        <!-- ====================================
+            TURN DISPLAY
+        ===================================== -->
+
+        <div id="turnDisplay">
+            Player X's turn
+        </div>
+
+
+        <!-- ====================================
+            GAME BOARD
+        ===================================== -->
+
+        <div id="board">
+
+            <!-- Winning Lines -->
+
             <div class="line row-1"></div>
             <div class="line row-2"></div>
             <div class="line row-3"></div>
-            
+
             <div class="line col-1"></div>
             <div class="line col-2"></div>
             <div class="line col-3"></div>
-            
+
             <div class="line diag-1"></div>
             <div class="line diag-2"></div>
+
+
+            <!-- Cells -->
+
+            <div class="cell"></div>
+            <div class="cell"></div>
+            <div class="cell"></div>
+
+            <div class="cell"></div>
+            <div class="cell"></div>
+            <div class="cell"></div>
+
+            <div class="cell"></div>
+            <div class="cell"></div>
+            <div class="cell"></div>
+
         </div>
-        <button id="restartBtn" class="restart-btn">Restart Game</button> 
-        <div class="scoreboard">
-            <div>
-                <p>Player X: <span id="scoreX">0</span></p>
-                <p>Player O: <span id="scoreO">0</span></p>
-            </div>
-            <button id="resetScore">Reset Score</button>
-        </div>
+
     </main>
 
+
+    <!-- ====================================
+        RESULT OVERLAY
+    ===================================== -->
+
+    <div class="result-overlay" id="resultOverlay">
+
+        <div class="result-card">
+
+            <div class="result-icon" id="resultIcon">
+                🎉
+            </div>
+
+
+            <h2 id="resultTitle">
+                You Win!
+            </h2>
+
+
+            <p id="resultMessage">
+                Excellent move!
+            </p>
+
+
+            <div class="result-actions">
+                <button id="playAgainBtn" type="button">
+                    Play Again
+                </button>
+
+
+                <button id="resultChangeModeBtn" type="button">
+                    Change Mode
+                </button>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
     <script src="/assets/javascript/n-and-c.js"></script>
+
 </body>
+
 </html>
