@@ -1,367 +1,502 @@
 # 🎮 Noughts & Crosses
 
-A polished, responsive **Noughts & Crosses (Tic-Tac-Toe)** game built with **HTML, CSS, and modern JavaScript (ES6+)**.
+A modern, responsive, and interactive **Noughts & Crosses (Tic-Tac-Toe)** game built with **HTML, CSS, and JavaScript**.
 
-The project focuses not only on the game logic, but also on creating an engaging user experience through responsive design, theme switching, background ambience, audio controls, persistent scores, and animated winning indicators.
+The game features multiple game modes, computer difficulty levels, sound effects, background music, dark/light themes, persistent scores, and a polished responsive interface.
 
 ---
+
+
+## 🚀 Live Demo
+
+🔗 **Play the Game:**  
+**[Play Noughts and Crosses](https://ali-technology.github.io/nougths-and-crosses/)**
+
+---
+
+
+## 📸 Preview
+
+![Noughts & Crosses Preview](/assets/images/X-O.png)
+
+---
+
 
 ## ✨ Features
 
-* 🎮 **Two-player gameplay** — Players X and O can play against each other.
-* 🏆 **Winner detection** — Automatically detects all possible winning combinations.
-* 🤝 **Draw detection** — Detects when the board is completely filled without a winner.
-* 📈 **Persistent scoreboard** — Scores are stored using `localStorage` and remain after refreshing the page.
-* 🔄 **Restart Game** — Start a new round without losing the overall scoreboard.
-* 🗑️ **Reset Score** — Completely reset both players' scores.
-* 🎵 **Background music** — Ambient background music enhances the gaming experience.
-* ▶️ **Play/Pause controls** — Users can manually control the background music.
-* 🔊 **Volume control** — Adjust the music volume using the audio settings.
-* 💾 **Saved audio preference** — The game remembers whether the user turned the music on or off.
-* 🌙 **Dark mode** — A visually immersive dark gaming interface.
-* ☀️ **Light mode** — A separate bright visual experience.
-* 💾 **Saved theme preference** — The selected theme is remembered between sessions.
-* ✨ **Animated winning line** — Highlights the winning combination when a player wins.
-* 📱 **Responsive design** — Optimized for desktops, tablets, and mobile devices.
-* ♿ **Reduced-motion support** — Respects the user's `prefers-reduced-motion` setting.
-* 🖱️ **Interactive UI** — Buttons and game cells include hover and active states.
-* 🎨 **Custom visual design** — Neon/glowing interface designed specifically for the game.
+### 🎮 Multiple Game Modes
+
+Choose between:
+
+- 👥 **Two Player Mode**
+  - Play against another person on the same device.
+  - Enter custom player names.
+  - Automatic board reset after a completed round.
+
+- 🤖 **Computer Mode**
+  - Play against the computer.
+  - Computer plays as **O**.
+  - Player plays as **X**.
 
 ---
 
-## 🛠️ Technologies Used
+### 🧠 Computer Difficulty
 
-| Technology          | Purpose                                                          |
-| ------------------- | ---------------------------------------------------------------- |
-| **HTML5**           | Game structure and semantic markup                               |
-| **CSS3**            | Layout, responsive design, animations, themes and visual effects |
-| **JavaScript ES6+** | Game logic, interactions and state management                    |
-| **Web Storage API** | Persistent scores, theme and music preferences                   |
-| **HTML5 Audio API** | Background music and audio controls                              |
-| **Font Awesome**    | Interface icons                                                  |
+Computer mode includes three difficulty levels:
+
+#### 🟢 Easy
+
+The computer selects an available cell randomly.
+
+Best for:
+- Beginners
+- Casual gameplay
+- Learning the game
+
+#### 🟡 Medium
+
+The computer uses basic strategy:
+
+1. Attempts to win.
+2. Blocks the player's winning move.
+3. Takes the center when available.
+4. Prioritizes corners.
+5. Makes a random move when necessary.
+
+#### 🔴 Hard
+
+Uses the **Minimax algorithm** to evaluate possible game states and select the optimal move.
+
+The Hard difficulty is designed to provide a much stronger opponent and can play strategically to avoid losing.
 
 ---
 
-## 🧠 How the Game Works
 
-The game uses a simple turn-based system.
+## 🔊 Audio System
 
-### 1. Player Turns
+The game includes a complete audio feedback system.
 
-The game begins with **Player X**.
+### Sound Effects
 
-After a player selects a cell:
+#### Different sounds are triggered by different interactions:
+
+- 🖱️ Click sound
+- ✖️ Move sound
+- 🏆 Win sound
+- 🤝 Draw sound
+- ❌ Error sound
+- 🤖 Computer loss/win feedback
+
+### Background Music
+
+#### Players can:
+
+- Play background music
+- Pause background music
+- Adjust volume
+- Enable/disable music
+
+Audio preferences are remembered using `localStorage`.
+
+---
+
+
+## 🌙 Dark & Light Mode
+
+### The game supports both:
+
+- 🌙 Dark Mode
+- ☀️ Light Mode
+
+The selected theme is stored using `localStorage`, so the player's preferred theme can be restored when they return.
+
+---
+
+
+## 🏆 Score System
+
+The game keeps track of:
+
+- X wins
+- O wins
+- Draws
+
+Scores are stored separately for each game mode.
+
+### Two Player
 
 ```text
-X → O → X → O → X → ...
+Player X
+Player O
+Draws
+
+Computer
+You
+Computer
+Draws
+
+Scores persist even after refreshing the page.
 ```
 
-The current player changes after every valid move.
 
-### 2. Winner Detection
+## 🔄 Automatic Round Reset
 
-After every move, the game checks the board against eight possible winning combinations:
+In Two Player Mode, the board automatically resets approximately 2 seconds after:
 
-```text
-[0, 1, 2]    Top row
-[3, 4, 5]    Middle row
-[6, 7, 8]    Bottom row
+A player wins
+The game ends in a draw
 
-[0, 3, 6]    Left column
-[1, 4, 7]    Middle column
-[2, 5, 8]    Right column
+This allows the result to remain visible briefly before the next round begins.
 
-[0, 4, 8]    Diagonal
-[2, 4, 6]    Diagonal
-```
+The score is preserved between rounds.
 
-If three matching symbols are found, the game ends and the corresponding winning line is displayed.
 
-### 3. Draw Detection
+## 🎨 Interactive Game UI
 
-If every cell is occupied and no winning combination exists, the game declares:
+### The interface includes:
 
-> It's a draw! 🤝
+1. Animated player moves
+2. Winning-line animation
+3. Winning-cell highlighting
+4. Turn indicator
+5. Computer thinking indicator
+6. Result overlay
+7. Game mode display
+8. Responsive controls
 
-### 4. Score Persistence
-
-The scoreboard is stored in the browser using:
-
-```javascript
-localStorage
-```
-
-This means the scores remain available even after refreshing the page.
-
----
-
-## 🎵 Audio System
-
-The game includes an ambient background track designed to complement the game's reasoning and concentration-focused atmosphere.
-
-The audio system includes:
-
-* Background music
-* Play/Pause functionality
-* Volume adjustment
-* Saved music preference
-* User-initiated playback
-* Audio settings panel
-
-### Audio Behavior
-
-The music does not continuously force itself to play.
-
-Once the player interacts with the game, the music can begin according to the user's saved preference.
-
-If the player manually pauses the music, subsequent game moves **do not automatically restart it**.
-
-The user must explicitly press **Play** to resume the music.
-
-This prevents unexpected audio playback during gameplay.
-
----
-
-## 🌙 Theme System
-
-The game supports two visual modes:
-
-### Dark Mode
-
-The default experience uses a dark, neon-inspired interface with glowing cyan/blue elements.
-
-### Light Mode
-
-The light theme provides a brighter alternative while maintaining the game's visual identity.
-
-The selected theme is saved using:
-
-```javascript
-localStorage
-```
-
-Therefore, the user's theme preference is preserved between sessions.
-
----
 
 ## 📱 Responsive Design
 
-The interface is designed to adapt to different screen sizes.
+### The game is designed to work across different screen sizes:
 
-Responsive breakpoints account for:
+1. 💻 Desktop
+2. 💻 Laptop
+3. 📱 Mobile
+4. 📱 Landscape mobile
+5. 📟 Tablet
 
-* Desktop screens
-* Large tablets
-* Tablets
-* Mobile phones
-* Small mobile phones
-* Landscape mobile devices
+The layout adapts to smaller screens while maintaining an accessible game board and controls.
 
-The game board dynamically scales using CSS variables and responsive sizing techniques.
-
-Example:
-
-```css
---board-size: min(400px, 80vw);
-```
-
-This allows the board to remain proportional to the available viewport.
-
----
-
-## 📂 Project Structure
-
-```text
-noughts-and-crosses/
-│
-├── index.html
-│
-├── assets/
-│   ├── audio/
-│   │   └── background-music.mp3
-│   │
-│   ├── css/
-│   │   └── n-and-c.css
-│   │
-│   ├── images/
-│   │   ├── X_O.jpg
-│   │   ├── UI-background.png
-│   │   └── UI-background-2.png
-│   │
-│   └── javascript/
-│       └── n-and-c.js
-│
-└── README.md
-```
-
----
-
-## 🚀 Getting Started
-
-### 1. Clone the repository
-
-```bash
-git clone https://github.com/YOUR-USERNAME/YOUR-REPOSITORY.git
-```
-
-### 2. Open the project
-
-Navigate into the project directory:
-
-```bash
-cd noughts-and-crosses
-```
-
-### 3. Run the game
-
-You can open `index.html` directly in your browser.
-
-For the best development experience, use a local development server such as **VS Code Live Server**.
-
----
-
-## 🎮 How to Play
-
-1. Player X starts the game.
-2. Click an empty cell to place your symbol.
-3. Player O takes the next turn.
-4. Continue alternating turns.
-5. Get three matching symbols in a row, column, or diagonal to win.
-6. If all nine cells are occupied without a winner, the game ends in a draw.
-7. Use **Restart Game** to begin another round.
-8. Use **Reset Score** to clear the scoreboard.
-
----
-
-## 🏆 Winning Conditions
-
-A player wins by getting three of their symbols:
-
-```text
-X | X | X
----------
-O | O | 
----------
-  |   |
-```
-
-or:
-
-```text
-X | O | 
----------
-X | O |
----------
-X |   |
-```
-
-or:
-
-```text
-X | O |
----------
-O | X |
----------
-O |   | X
-```
-
-There are eight possible winning combinations in total.
-
----
 
 ## 💾 Local Storage
 
-The project uses browser `localStorage` to persist game preferences.
+The game uses browser localStorage to preserve important user preferences and game data.
 
-### Stored data
+### Stored information includes:
 
-```text
-ttt-score
+1. Theme preference
+2. Music preference
+3. Sound preference
+4. Game scores
+
+This means users don't lose their preferences when they refresh the page.
+
+
+## 🧠 How the Game Works
+
+### Noughts & Crosses is played on a 3 × 3 grid.
+
+#### Two players take turns placing their marks:
+
+- X
+- O
+
+The first player to place three matching marks in a straight line wins.
+
+A winning combination can be:
+
+Horizontal
+Vertical
+Diagonal
+
+If all nine cells are occupied without a winning combination, the round ends in a draw.
+
+
+## 🎮 How to Play
+
+### Two Player Mode
+
+1. Open the game.
+2. Select Two Players.
+3. Enter the player names.
+4. Start the game.
+5. Player X makes the first move.
+6. Players take turns selecting empty cells.
+7. The first player to get three marks in a row wins.
+
+After a win or draw, the board automatically resets after approximately two seconds.
+
+### Computer Mode
+
+1. Open the game.
+2. Select Vs Computer.
+3. Choose a difficulty level.
+4. Start the game.
+5. You play as X.
+6. The computer plays as O.
+7. Try to defeat the computer.
+
+
+## 🛠️ Technologies Used
+
+1. Frontend
+2. HTML5
+3. CSS3
+4. JavaScript (ES6+)
+5. Browser APIs
+6. DOM API
+7. HTML5 Audio API
+8. local Storage
+
+
+## 📂 Project Structure
+
+### The project is organized into separate folders for HTML, CSS, JavaScript, images, and audio assets.
+
+```
+noughts-and-crosses/
+│
+├── audio/
+│   ├── background-music.mp3
+│   ├── click.mp3
+│   ├── move.mp3
+│   ├── win.mp3
+│   ├── lose.mp3
+│   ├── draw.mp3
+│   └── error.mp3
+│
+├── CSS/
+│   └── n-and-c.css
+│
+├── html/
+│   └── n-and-c.html
+│
+├── images/
+│   ├── PngItem_516981.png
+│   ├── UI-background-2.png
+│   ├── X_O.jpg
+│   └── X-O.png
+│
+├── JavaScript/
+│   └── n-and-c.js
+│
+└── README.md
+```
+Note: The folder names and file names above reflect the current structure of the project.
+
+## 📁 Folder Overview
+### audio/
+Contains all audio assets used by the game, including background music and gameplay sound effects.
+
+### CSS/
+Contains the stylesheet responsible for the game's visual design, layout, animations, themes, and responsive behavior.
+
+### CSS/
+└── n-and-c.css
+
+### html/
+Contains the main HTML document that defines the game's interface and structure.
+
+### html/
+└── n-and-c.html
+
+### images/
+Contains the image assets used throughout the project.
+
+### images/
+├── PngItem_516981.png
+├── UI-background-2.png
+├── X_O.jpg
+└── X-O.png
+
+### JavaScript/
+#### Contains the main game logic, including:
+Game state management
+Player turns
+Computer AI
+Difficulty levels
+Win detection
+Draw detection
+Score management
+Audio controls
+Theme management
+Game-mode switching
+Board resetting
+
+### JavaScript/
+└── n-and-c.js
+
+### README.md
+
+#### The project documentation containing information about the game, features, technologies, project structure, and usage.
+
+
+## ⚙️ Main JavaScript Systems
+
+### The JavaScript application is divided into several functional systems.
+
+#### Game Management
+startGame()
+resetGame()
+resetBoard()
+
+##### Responsible for starting and resetting game rounds.
+
+#### Game Modes
+setGameMode()
+changeGameMode()
+
+##### Controls switching between Two Player and Computer modes.
+
+#### Player Moves
+handleMove()
+makeMove()
+switchPlayer()
+
+##### Handles player interactions and turn management.
+
+#### Win & Draw Detection
+checkWinner()
+checkDraw()
+
+##### Determines the current state of the game.
+
+#### Computer AI
+computerMove()
+getEasyMove()
+getMediumMove()
+getHardMove()
+minimax()
+
+##### Controls the computer's behavior across the three difficulty levels.
+
+#### Score Management
+loadScoreToUI()
+updateScore()
+updateDrawScore()
+resetScore()
+
+##### Manages and displays game scores.
+
+#### Audio
+playSound()
+toggleSound()
+toggleMusic()
+playBackgroundMusic()
+
+##### Controls sound effects and background music.
+
+#### Theme
+toggleTheme()
+restoreTheme()
+
+##### Controls Dark and Light Mode.
+
+
+## 🧠 Minimax Algorithm
+
+The Hard computer difficulty uses the Minimax algorithm.
+
+The algorithm evaluates possible future game states and assigns scores based on the outcome.
+
+Conceptually:
+
+```
+Computer Win
+     ↓
+ Positive Score
+
+Draw
+     ↓
+     0
+
+Computer Loss
+     ↓
+ Negative Score
 ```
 
-Stores the current X and O scores.
+The computer evaluates the available moves and chooses the move that produces the strongest possible outcome.
 
-```text
-theme
+This makes the Hard difficulty considerably more challenging than the Easy and Medium modes.
+
+
+## 🎯 Game Rules
+
+### The objective is simple:
+
+Get three of your marks in a row before your opponent does.
+
+### Winning combinations include:
+```
+X X X
+- - -
+- - -
+
+X - -
+X - -
+X - -
+
+X - -
+- X -
+- - X
 ```
 
-Stores the selected visual theme.
+The first player to complete a horizontal, vertical, or diagonal line wins.
 
-```text
-music
-```
+If all nine cells are occupied and neither player has three in a row, the game ends in a draw.
 
-Stores the user's music preference.
-
-This allows the game to maintain its state and preferences across browser sessions.
-
----
-
-## 🎨 Design Goals
-
-The project was designed around three main principles:
-
-### 1. Simplicity
-
-The rules of Noughts & Crosses are simple, so the interface should remain easy to understand.
-
-### 2. Immersion
-
-The dark neon interface, glowing elements, background ambience and winning animations create a more engaging experience.
-
-### 3. Responsiveness
-
-The game should remain comfortable to play regardless of the device being used.
-
----
 
 ## 🔮 Future Improvements
 
-Possible future improvements include:
+### Possible future improvements include:
 
-* 🤖 Single-player mode with AI
-* 🧠 Multiple AI difficulty levels
-* 🏅 Player statistics
-* 📊 Win/loss history
-* 🎯 Best-of-three and tournament modes
-* 🔔 Sound effects for moves and wins
-* 🎵 Multiple background music tracks
-* 🎨 More visual themes
-* 🌐 Online multiplayer
-* 👤 Player profiles
-* 🏆 Achievement system
-* 📱 Progressive Web App (PWA) support
+ 1. Online multiplayer
+ 2. Real-time multiplayer using WebSockets
+ 3. Player profiles
+ 4. Player avatars
+ 5. Win streak tracking
+ 6. Match history
+ 7. Leaderboards
+ 8. Tournament mode
+ 9. Custom board sizes
+ 10. Advanced AI
+ 11. AI statistics
+ 12. Game replay system
+ 13. Keyboard accessibility
+ 14. Additional themes
+ 15. Custom sound settings
+ 16. Progressive Web App (PWA) support
 
----
 
-## 🧪 Current Project Status
+## 🔐 Privacy
 
-**Status:** 🟢 Complete / Playable
+Noughts & Crosses does not require users to create an account.
 
-The current version supports fully functional two-player gameplay, responsive layouts, persistent scores, theme preferences, background music, audio controls, draw detection, and animated winning indicators.
+Game preferences and scores are stored locally in the browser using localStorage.
 
----
+The game does not require a backend server to operate.
+
 
 ## 👨‍💻 Author
+### Habeeb Ali
 
-**Habeeb Ali**
+### Front-End Developer, UI/UX Designer & Graphic Designer
 
-Front-End Developer, Graphic Designer, and UI/UX Designer
 
-I built this project as part of my journey in developing interactive web applications while combining programming with modern UI/UX design.
+## 📬 Contact
+- Email: havisuuals26@gmail.com
+- GitHub: https://github.com/Ali-technology
+- Facebook: https://www.facebook.com/profile.php?id=100067484664093
 
----
-
-## 📄 License
-
-This project is available for learning and portfolio purposes.
-
-If you reuse significant portions of the source code or design, please provide appropriate credit to the original author.
-
----
 
 ## ⭐ Support
 
-If you find this project useful or interesting, consider giving the repository a ⭐ on GitHub.
+If you enjoyed the project or found it useful, consider giving the repository a ⭐ on GitHub.
 
-Thanks for checking out **Noughts & Crosses!** 🎮
+#### Your support is greatly appreciated!
+
+## 📄 License
+
+### This project is available for educational and personal use.
+
+### You are welcome to study, modify, and improve the project for your own learning and development.
